@@ -1,8 +1,8 @@
-export interface Listener {
-  (...args: any[]): void
+export interface WebworkerEventListener <T = any> {
+  (worker: Worker, event: MessageEvent<T>): void
 }
 
-const events: Record<string, Listener[]> = {}
+const events: Record<string, WebworkerEventListener[]> = {}
 
 const observable = (worker: Worker & { port?: any }) => {
   worker.addEventListener('message', (event) => {
@@ -16,7 +16,7 @@ const observable = (worker: Worker & { port?: any }) => {
   }
 }
 
-observable.addEventListener = (type: string, fn: Listener) => {
+observable.addEventListener = (type: string, fn: WebworkerEventListener) => {
   if (events[type] == null) {
     events[type] = []
   }
@@ -24,7 +24,7 @@ observable.addEventListener = (type: string, fn: Listener) => {
   events[type].push(fn)
 }
 
-observable.removeEventListener = (type: string, fn: Listener) => {
+observable.removeEventListener = (type: string, fn: WebworkerEventListener) => {
   if (events[type] == null) {
     return
   }
@@ -33,14 +33,12 @@ observable.removeEventListener = (type: string, fn: Listener) => {
     .filter(listener => listener === fn)
 }
 
-observable.dispatchEvent = function (...args: any[]) {
-  const type = args.shift()
-
+observable.dispatchEvent = function (type: string, worker: Worker, event: MessageEvent<any>) {
   if (events[type] == null) {
     return
   }
 
-  events[type].forEach(fn => fn.apply(null, args))
+  events[type].forEach(fn => fn(worker, event))
 }
 
 export default observable
