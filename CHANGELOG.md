@@ -1,3 +1,10 @@
+### [2.0.1](https://github.com/achingbrain/observable-webworkers/compare/v2.0.0...v2.0.1) (2022-02-09)
+
+
+### Bug Fixes
+
+* update listener type to allow typing data field ([#2](https://github.com/achingbrain/observable-webworkers/issues/2)) ([e351de3](https://github.com/achingbrain/observable-webworkers/commit/e351de3bd95bbea3f436d1b7e6bac422830dd06f))
+
 ## [2.0.0](https://github.com/achingbrain/observable-webworkers/compare/v1.0.0...v2.0.0) (2022-02-08)
 
 
